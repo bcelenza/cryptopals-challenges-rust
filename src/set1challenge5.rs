@@ -15,7 +15,7 @@ pub mod set1challenge5 {
         use super::*;
 
         #[test]
-        fn test_solve() {
+        fn test_s1c5() {
             let input = String::from("Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal");
             let start = time::Instant::now();
             let result = solve(&input).unwrap();

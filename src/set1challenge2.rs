@@ -17,7 +17,7 @@ pub mod set1challenge2 {
         use super::*;
 
         #[test]
-        fn test_solve() {
+        fn test_s1c2() {
             let input = String::from("1c0111001f010100061a024b53535009181c");
             let start = time::Instant::now();
             let result = solve(&input).unwrap();

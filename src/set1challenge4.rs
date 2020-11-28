@@ -21,7 +21,7 @@ pub mod set1challenge4 {
         use std::fs;
 
         #[test]
-        fn test_solve() {
+        fn test_s1c4() {
             let input = fs::read_to_string("challenge4.txt").unwrap();
             let start = time::Instant::now();
             let result = solve(&input);
