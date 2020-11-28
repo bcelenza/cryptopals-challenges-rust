@@ -2,6 +2,7 @@ extern crate base64;
 extern crate hex;
 extern crate time;
 
+mod hamming;
 
 mod set1challenge1;
 mod set1challenge2;
