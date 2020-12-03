@@ -3,11 +3,15 @@ pub mod set1challenge5 {
 
     pub fn solve(input: &str) -> Result<String, Box<dyn Error>> {
         let key = "ICE".as_bytes();
-        let result: Vec<u8> = input.as_bytes().iter()
+        let result = decrypt_repeating_xor(input.as_bytes(), key);
+        Ok(hex::encode(result))
+    }
+
+    pub fn decrypt_repeating_xor(ciphertext: &[u8], key: &[u8]) -> Vec<u8> {
+        ciphertext.iter()
             .zip(key.iter().cycle())
             .map(|(x1, x2)| x1 ^ x2)
-            .collect();
-        Ok(hex::encode(result))
+            .collect()
     }
 
     #[cfg(test)]

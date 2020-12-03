@@ -9,3 +9,4 @@ mod set1challenge2;
 mod set1challenge3;
 mod set1challenge4;
 mod set1challenge5;
+mod set1challenge6;

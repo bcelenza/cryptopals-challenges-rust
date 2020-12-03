@@ -39,7 +39,7 @@ pub mod set1challenge3 {
         Ok(answer.unwrap())
     }
 
-    fn score(input: &Vec<u8>) -> u32 {
+    pub fn score(input: &Vec<u8>) -> u32 {
         // using the top 10 english characters, develop a score weighted by their frequency
         // other characters will count as zero
         let char_weights: HashMap<u8, u8> = [
