@@ -1,6 +1,5 @@
 pub mod set1challenge6 {
     use std::error::Error;
-    use std::slice::Chunks;
     use crate::hamming::*;
     use crate::set1challenge3::*;
     use crate::set1challenge5::*;
@@ -17,16 +16,20 @@ pub mod set1challenge6 {
 
         // find the probable key size for the ciphertext
         let probable_key_size = find_probable_key_size(&ciphertext)?;
-        println!("Key size is probably {} (normalized hamming distance: {:.3})", probable_key_size.key_size, probable_key_size.normalized_distance);
+        let key_size = probable_key_size.key_size;
 
-        // split the cipher text into blocks of key_size size
-        let blocks = ciphertext.chunks(probable_key_size.key_size);
+        // split the cipher text into key_size blocks of every nth element
+        let blocks = ciphertext.chunks(key_size);
+        let mut transposed_blocks: Vec<Vec<u8>> = vec![Vec::with_capacity(blocks.len()); key_size];
+        blocks.for_each(|b| b.iter().enumerate().for_each(|(i, x)| transposed_blocks[i].push(*x)));
 
+        // cycle through every key byte to identify what the value of that byte should be
         let mut key: Vec<u8> = Vec::new();
-        for key_byte in 0..probable_key_size.key_size {
-            key.push(find_key_byte(&blocks, key_byte));
+        for key_byte in 0..key_size {
+            key.push(find_key_byte(&transposed_blocks[key_byte]));
         }
 
+        // decrypt this thing
         let value = String::from_utf8(set1challenge5::decrypt_repeating_xor(&ciphertext, &key))?;
 
         Ok(Answer {
@@ -43,15 +46,19 @@ pub mod set1challenge6 {
     fn find_probable_key_size(ciphertext: &Vec<u8>) -> Result<KeySize, Box<dyn Error>> {
         let mut probable_key_size: Option<KeySize> = None;
 
+        // search for key size from 2-40 characters
         for key_size in 2..40 {
             let mut distance: usize = 0;
             let blocks = ciphertext.len() / key_size;
 
+            // iterate through pairs of blocks and compare their distance
             for block in 1..blocks {
                 let slice1 = &ciphertext[(block - 1) * key_size .. block * key_size];
                 let slice2 = &ciphertext[key_size * block .. (block + 1) * key_size];
                 distance += hamming::distance_slice(slice1, slice2)?;
             }
+
+            // normalize that distance by the key size and number of blocks
             let normalized_distance = distance as f32 / key_size as f32 / blocks as f32;
 
             if probable_key_size.as_ref().is_none() || probable_key_size.as_ref().unwrap().normalized_distance >= normalized_distance {
@@ -65,20 +72,18 @@ pub mod set1challenge6 {
         Ok(probable_key_size.unwrap())
     }
 
-    fn find_key_byte(blocks: &Chunks<u8>, offset: usize) -> u8 {
+    fn find_key_byte(bytes: &Vec<u8>) -> u8 {
         let mut best_score = 0;
         let mut probable_key: u8 = 0;
 
-        // for test_key in 0..u8::MAX {
-            // let ciphertext_block_bytes = blocks.partition(f: F).clone().map(|b| b[offset] ^ test_key).collect();
-            // let score = set1challenge3::score(&ciphertext_block_bytes);
-            // if score >= best_score {
-                // best_score = score;
-                // probable_key = test_key;
-            // }
-        // }
-
-        println!("Key byte {} is {} (score: {})", offset, probable_key, best_score);
+        for test_key in 0..u8::MAX {
+            let test_decoded: Vec<u8> = bytes.iter().map(|b| b ^ test_key).collect();
+            let score = set1challenge3::score(&test_decoded);
+            if score >= best_score {
+                best_score = score;
+                probable_key = test_key;
+            }
+        }
 
         probable_key
     }
@@ -94,7 +99,7 @@ pub mod set1challenge6 {
             let start = time::Instant::now();
             let result = solve(&input).unwrap();
             let solve_time = start.elapsed().whole_microseconds();
-            println!("Set 1 Challenge 6 result: {}", result.value);
+            assert_eq!(fs::read_to_string("challenge6-decrypted.txt").unwrap(), result.value);
             println!("Set 1 Challenge 6 took {}us to solve.", solve_time);
         }
     }
