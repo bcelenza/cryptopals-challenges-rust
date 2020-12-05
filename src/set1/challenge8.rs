@@ -4,7 +4,7 @@ use std::collections::HashMap;
 pub fn solve(input: &str) -> Result<Vec<u8>, Box<dyn Error>> {
     let decoded: Result<Vec<_>, _> = input.lines().map(|e| hex::decode(e)).collect();
     let lines = decoded?; 
-    let key_size_bytes = 1;
+    let key_size_bytes = 16;
     
     // search for repeated blocks in each line, summing how many
     // repeated blocks were found at the end
