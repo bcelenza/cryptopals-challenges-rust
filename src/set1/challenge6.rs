@@ -1,7 +1,7 @@
 use std::error::Error;
 use crate::hamming::*;
 use crate::set1::challenge3::score;
-use crate::set1::challenge5::decrypt_repeating_xor;
+use crate::cipher::repeating_xor::*;
 
 #[derive(Clone)]
 pub struct Answer {
@@ -29,7 +29,7 @@ pub fn solve(input: &str) -> Result<Answer, Box<dyn Error>> {
     }
 
     // decrypt this thing
-    let value = String::from_utf8(decrypt_repeating_xor(&ciphertext, &key))?;
+    let value = String::from_utf8(repeating_xor::decrypt(&ciphertext, &key))?;
 
     Ok(Answer {
         value: value,

@@ -1,16 +1,10 @@
 use std::error::Error;
+use crate::cipher::repeating_xor::*;
 
 pub fn solve(input: &str) -> Result<String, Box<dyn Error>> {
     let key = "ICE".as_bytes();
-    let result = decrypt_repeating_xor(input.as_bytes(), key);
+    let result = repeating_xor::decrypt(input.as_bytes(), key);
     Ok(hex::encode(result))
-}
-
-pub fn decrypt_repeating_xor(ciphertext: &[u8], key: &[u8]) -> Vec<u8> {
-    ciphertext.iter()
-        .zip(key.iter().cycle())
-        .map(|(x1, x2)| x1 ^ x2)
-        .collect()
 }
 
 #[cfg(test)]
