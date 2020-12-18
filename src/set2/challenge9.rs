@@ -13,7 +13,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_s1c9() {
+    fn test_s2c9() {
         let input = String::from("YELLOW SUBMARINE");
         let start = time::Instant::now();
         let result = solve(&input).unwrap();
