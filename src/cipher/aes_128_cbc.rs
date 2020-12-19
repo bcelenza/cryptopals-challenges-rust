@@ -3,7 +3,7 @@ pub mod aes_128_cbc {
     use std::error::Error;
     use openssl::symm::{Cipher, Crypter, Mode};
 
-    pub fn decrypt(ciphertext: &Vec<u8>, key: &Vec<u8>, iv: &Vec<u8>) -> Result<Vec<u8>, Box<dyn Error>> {
+    pub fn decrypt(ciphertext: &[u8], key: &[u8], iv: &[u8]) -> Result<Vec<u8>, Box<dyn Error>> {
         let mut decrypter = Crypter::new(Cipher::aes_128_ecb(), Mode::Decrypt, key, None)?;
         decrypter.pad(false);
 

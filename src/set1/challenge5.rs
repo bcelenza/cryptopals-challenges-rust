@@ -2,7 +2,7 @@ use std::error::Error;
 use crate::cipher::repeating_xor::*;
 
 pub fn solve(input: &str) -> Result<String, Box<dyn Error>> {
-    let key = "ICE".as_bytes();
+    let key = b"ICE";
     let result = repeating_xor::decrypt(input.as_bytes(), key);
     Ok(hex::encode(result))
 }

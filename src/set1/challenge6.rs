@@ -42,7 +42,7 @@ struct KeySize {
     pub normalized_distance: f32,
 }
 
-fn find_probable_key_size(ciphertext: &Vec<u8>) -> Result<KeySize, Box<dyn Error>> {
+fn find_probable_key_size(ciphertext: &[u8]) -> Result<KeySize, Box<dyn Error>> {
     let mut probable_key_size: Option<KeySize> = None;
 
     // search for key size from 2-40 characters
@@ -54,7 +54,7 @@ fn find_probable_key_size(ciphertext: &Vec<u8>) -> Result<KeySize, Box<dyn Error
         for block in 1..blocks {
             let slice1 = &ciphertext[(block - 1) * key_size .. block * key_size];
             let slice2 = &ciphertext[key_size * block .. (block + 1) * key_size];
-            distance += hamming::distance(slice1, slice2)?;
+            distance += hamming::distance(slice1, slice2);
         }
 
         // normalize that distance by the key size and number of blocks
@@ -71,7 +71,7 @@ fn find_probable_key_size(ciphertext: &Vec<u8>) -> Result<KeySize, Box<dyn Error
     Ok(probable_key_size.unwrap())
 }
 
-fn find_key_byte(bytes: &Vec<u8>) -> u8 {
+fn find_key_byte(bytes: &[u8]) -> u8 {
     let mut best_score = 0;
     let mut probable_key: u8 = 0;
 
