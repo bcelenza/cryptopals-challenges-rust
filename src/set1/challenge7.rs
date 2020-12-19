@@ -1,11 +1,11 @@
 use std::error::Error;
+use crate::cipher::aes_128_ebc::*;
 
 pub fn solve(input: &str) -> Result<String, Box<dyn Error>> {
     // convert string to individual hex bytes
     let ciphertext = base64::decode(input.replace("\n", ""))?;
-    let key = "YELLOW SUBMARINE";
-    let cipher = openssl::symm::Cipher::aes_128_ecb();
-    let decrypted = openssl::symm::decrypt(cipher, key.as_bytes(), None, &ciphertext)?;
+    let key = b"YELLOW SUBMARINE";
+    let decrypted = aes_128_ebc::decrypt(&ciphertext, key, None)?;
     let result = String::from_utf8(decrypted)?;
     Ok(result)
 }

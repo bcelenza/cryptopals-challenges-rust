@@ -1,7 +1,7 @@
 use std::error::Error;
-use crate::hamming::*;
-use crate::set1::challenge3::score;
+use crate::codebreak::hamming::*;
 use crate::cipher::repeating_xor::*;
+use crate::set1::challenge3::score;
 
 #[derive(Clone)]
 pub struct Answer {
@@ -54,7 +54,7 @@ fn find_probable_key_size(ciphertext: &Vec<u8>) -> Result<KeySize, Box<dyn Error
         for block in 1..blocks {
             let slice1 = &ciphertext[(block - 1) * key_size .. block * key_size];
             let slice2 = &ciphertext[key_size * block .. (block + 1) * key_size];
-            distance += hamming::distance_slice(slice1, slice2)?;
+            distance += hamming::distance(slice1, slice2)?;
         }
 
         // normalize that distance by the key size and number of blocks

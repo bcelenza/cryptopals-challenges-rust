@@ -3,7 +3,7 @@ extern crate hex;
 extern crate time;
 extern crate openssl;
 
-mod hamming;
+mod codebreak;
 mod pkcs7;
 mod cipher;
 
