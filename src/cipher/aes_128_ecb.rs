@@ -1,4 +1,4 @@
-pub mod aes_128_ebc {
+pub mod aes_128_ecb {
     use std::error::Error;
 
     pub fn encrypt(input: &[u8], key: &[u8], iv: Option<&[u8]>) -> Result<Vec<u8>, Box<dyn Error>> {
