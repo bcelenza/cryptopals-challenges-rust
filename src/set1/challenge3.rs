@@ -83,11 +83,7 @@ mod tests {
     #[test]
     fn test_s1c3() {
         let input = String::from("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736");
-        let start = time::Instant::now();
         let result = solve(&input).unwrap();
-        let solve_time = start.elapsed().whole_microseconds();
-
         assert_eq!("Cooking MC's like a pound of bacon", String::from_utf8(result.value).unwrap());
-        println!("Set 1 Challenge 3 took {}us to solve.", solve_time);
     }
 }

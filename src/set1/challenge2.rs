@@ -18,11 +18,7 @@ mod tests {
     #[test]
     fn test_s1c2() {
         let input = String::from("1c0111001f010100061a024b53535009181c");
-        let start = time::Instant::now();
         let result = solve(&input).unwrap();
-        let solve_time = start.elapsed().whole_microseconds();
-
         assert_eq!("746865206b696420646f6e277420706c6179", result);
-        println!("Set 1 Challenge 2 took {}us to solve.", solve_time);
     }
 }

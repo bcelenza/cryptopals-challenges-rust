@@ -18,10 +18,7 @@ mod tests {
     #[test]
     fn test_s1c7() {
         let input = fs::read_to_string("data/set1/challenge7.txt").unwrap();
-        let start = time::Instant::now();
         let result = solve(&input).unwrap();
-        let solve_time = start.elapsed().whole_microseconds();
         assert_eq!(fs::read_to_string("data/set1/challenge6-decrypted.txt").unwrap(), result);
-        println!("Set 1 Challenge 7 took {}us to solve.", solve_time);
     }
 }

@@ -18,10 +18,7 @@ mod tests {
         let iv = vec![0; key.len()];
         let input = fs::read_to_string("data/set2/challenge10.txt").unwrap();
         let expected = fs::read_to_string("data/set2/challenge10-decrypted.txt").unwrap();
-        let start = time::Instant::now();
         let result = solve(&input, key, &iv).unwrap();
-        let solve_time = start.elapsed().whole_microseconds();
         assert_eq!(expected, String::from_utf8(result).unwrap());
-        println!("Set 2 Challenge 10 took {}us to solve.", solve_time);
     }
 }

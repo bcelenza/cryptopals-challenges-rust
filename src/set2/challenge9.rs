@@ -15,11 +15,8 @@ mod tests {
     #[test]
     fn test_s2c9() {
         let input = String::from("YELLOW SUBMARINE");
-        let start = time::Instant::now();
         let result = solve(&input).unwrap();
         let expected = [input.as_bytes().to_vec(), vec![4; 4]].concat();
         assert_eq!(expected, result);
-        let solve_time = start.elapsed().whole_microseconds();
-        println!("Set 2 Challenge 9 took {}us to solve.", solve_time);
     }
 }

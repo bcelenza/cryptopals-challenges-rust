@@ -22,12 +22,8 @@ mod tests {
     #[test]
     fn test_s1c4() {
         let input = fs::read_to_string("data/set1/challenge4.txt").unwrap();
-        let start = time::Instant::now();
         let result = solve(&input);
-        let solve_time = start.elapsed().whole_microseconds();
-
         let value = String::from_utf8(result.unwrap().value).unwrap();
         assert_eq!("Now that the party is jumping\n", value);
-        println!("Set 1 Challenge 4 took {}us to solve.", solve_time);
     }
 }
