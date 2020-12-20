@@ -1,6 +1,6 @@
 use std::error::Error;
-use crate::codebreak::hamming::*;
-use crate::cipher::repeating_xor::*;
+use crate::codebreak::hamming;
+use crate::cipher::repeating_xor;
 use crate::set1::challenge3::score;
 
 #[derive(Clone)]

@@ -1,5 +1,5 @@
 use std::error::Error;
-use crate::cipher::aes_128_ecb::*;
+use crate::cipher::aes_128_ecb;
 
 pub fn solve(input: &str) -> Result<String, Box<dyn Error>> {
     // convert string to individual hex bytes

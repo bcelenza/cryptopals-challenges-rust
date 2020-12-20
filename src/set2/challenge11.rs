@@ -1,8 +1,8 @@
 
 use std::error::Error;
 use rand::Rng;
-use crate::cipher::aes_128_cbc::*;
-use crate::cipher::aes_128_ecb::*;
+use crate::cipher::aes_128_cbc;
+use crate::cipher::aes_128_ecb;
 
 #[derive(Debug)]
 enum EncryptionKind {
@@ -56,7 +56,7 @@ fn encryption_oracle(input: &[u8]) -> Result<OracleResult, Box<dyn Error>> {
 mod tests {
     use super::*;
     use std::fs;
-    use crate::codebreak::ecb_detector::*;
+    use crate::codebreak::ecb_detector;
 
     #[test]
     fn test_s2c11() {

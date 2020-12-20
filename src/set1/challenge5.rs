@@ -1,5 +1,5 @@
 use std::error::Error;
-use crate::cipher::repeating_xor::*;
+use crate::cipher::repeating_xor;
 
 pub fn solve(input: &str) -> Result<String, Box<dyn Error>> {
     let key = b"ICE";

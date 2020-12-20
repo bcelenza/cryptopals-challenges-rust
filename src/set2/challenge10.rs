@@ -1,6 +1,6 @@
 
 use std::error::Error;
-use crate::cipher::aes_128_cbc::*;
+use crate::cipher::aes_128_cbc;
 
 pub fn solve(ciphertext: &str, key: &[u8], iv: &[u8]) -> Result<Vec<u8>, Box<dyn Error>> {
     let decoded = base64::decode(ciphertext.replace("\n", ""))?;
