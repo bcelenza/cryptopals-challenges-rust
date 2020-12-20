@@ -5,7 +5,7 @@ use crate::pkcs7::*;
 pub fn solve(input: &str) -> Result<Vec<u8>, Box<dyn Error>> {
     let bytes = input.as_bytes().to_vec();
     let key_size: usize = 20;
-    Ok(pkcs7::pad(&bytes, &key_size))
+    Ok(pkcs7::pad(&bytes, key_size))
 }
 
 #[cfg(test)]
