@@ -1,4 +1,4 @@
-RUSTFLAGS=-A dead_code -C target-cpu=native
+RUSTFLAGS=-C target-cpu=native
 
 .PHONY: test
 test:

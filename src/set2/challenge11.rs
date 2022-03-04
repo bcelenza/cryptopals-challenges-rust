@@ -5,18 +5,18 @@ use crate::cipher::aes_128_cbc;
 use crate::cipher::aes_128_ecb;
 
 #[derive(Debug)]
-enum EncryptionKind {
+pub enum EncryptionKind {
     AesCbc,
     AesEcb,
 }
 
 #[derive(Debug)]
-struct OracleResult {
+pub struct OracleResult {
     pub encrypted: Vec<u8>,
     pub kind: EncryptionKind,
 }
 
-fn encryption_oracle(input: &[u8]) -> Result<OracleResult, Box<dyn Error>> {
+pub fn encryption_oracle(input: &[u8]) -> Result<OracleResult, Box<dyn Error>> {
     // choose CBC or EBC
     let kind: EncryptionKind;
     let random = rand::random::<u8>();

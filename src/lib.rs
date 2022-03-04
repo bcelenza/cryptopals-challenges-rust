@@ -3,9 +3,9 @@ extern crate hex;
 extern crate time;
 extern crate openssl;
 
-mod codebreak;
-mod pkcs7;
-mod cipher;
+pub mod codebreak;
+pub mod pkcs7;
+pub mod cipher;
 
-mod set1;
-mod set2;
+pub mod set1;
+pub mod set2;
