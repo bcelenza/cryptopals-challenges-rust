@@ -56,14 +56,14 @@ pub fn encryption_oracle(input: &[u8]) -> Result<OracleResult, Box<dyn Error>> {
 mod tests {
     use super::*;
     use std::fs;
-    use crate::codebreak::ecb_detector;
+    use crate::codebreak::ecb;
 
     #[test]
     fn test_s2c11() {
         let input = fs::read_to_string("data/set2/challenge11.txt").unwrap();
         for _ in 0..1000 {
             let result = encryption_oracle(input.as_bytes()).unwrap();
-            let is_ecb = ecb_detector::is_ecb(&result.encrypted, &16);
+            let is_ecb = ecb::is_ecb(&result.encrypted, &16);
             match result.kind {
                 EncryptionKind::AesCbc => assert_eq!(false, is_ecb),
                 EncryptionKind::AesEcb => assert_eq!(true, is_ecb),

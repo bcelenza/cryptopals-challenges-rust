@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::error::Error;
 
 pub fn is_ecb(ciphertext: &[u8], key_size_bytes: &usize) -> bool {
     // search for repeated blocks in the ciphertext, summing how many
@@ -11,6 +12,31 @@ pub fn is_ecb(ciphertext: &[u8], key_size_bytes: &usize) -> bool {
     let repeated_sum = block_frequencies.values()
         .fold(0, |acc, val| if *val > 1 { acc + val } else { acc });
     repeated_sum > 1
+}
+
+pub fn determine_block_size(max_len: usize, encrypt_routine: fn(&[u8]) -> Result<Vec<u8>, Box<dyn Error>>) -> usize {
+    let mut block_size: usize = 0;
+    let mut last_ciphertext_size: usize = 0;
+    for s in 1..max_len+1 {
+        let input: Vec<u8> = (0..s).map(|_| 65).collect();
+        let ciphertext = encrypt_routine(input.as_ref()).unwrap();
+        if last_ciphertext_size > 0 && ciphertext.len() > last_ciphertext_size {
+            block_size = ciphertext.len() - last_ciphertext_size;
+            break;
+        }
+        last_ciphertext_size = ciphertext.len();
+    }
+    block_size
+}
+
+pub fn build_byte_dictionary(prefix: &[u8], block_start: usize, block_end: usize, encrypt_routine: fn(&[u8]) -> Result<Vec<u8>, Box<dyn Error>>) -> HashMap<Vec<u8>, u8> {
+    let mut dictionary: HashMap<Vec<u8>, u8> = HashMap::new();
+    for byte in 0..u8::MAX {
+        let input = [prefix.to_owned(), vec![byte]].concat();
+        let block = encrypt_routine(input.as_ref()).unwrap()[block_start..block_end].to_vec();
+        dictionary.insert(block, byte);
+    }
+    dictionary
 }
 
 #[cfg(test)]

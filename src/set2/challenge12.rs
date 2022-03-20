@@ -4,7 +4,6 @@ use crate::cipher::aes_128_ecb;
 use lazy_static::lazy_static;
 use rand::Rng;
 use std::error::Error;
-use std::collections::HashMap;
 
 lazy_static! {
     // create a random static key
@@ -25,41 +24,21 @@ pub fn encryption_oracle(input: &[u8]) -> Result<Vec<u8>, Box<dyn Error>> {
     Ok(encrypted)
 }
 
-pub fn dictionary(prefix: &[u8], block_start: usize, block_end: usize) -> HashMap<Vec<u8>, u8> {
-    let mut dictionary: HashMap<Vec<u8>, u8> = HashMap::new();
-    for byte in 0..u8::MAX {
-        let input = [prefix.to_owned(), vec![byte]].concat();
-        let block = encryption_oracle(input.as_ref()).unwrap()[block_start..block_end].to_vec();
-        dictionary.insert(block, byte);
-    }
-    assert_eq!(u8::MAX as usize, dictionary.len());
-    dictionary
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::codebreak::ecb_detector;
+    use crate::codebreak::ecb;
     use crate::pkcs7::pkcs7;
 
     #[test]
     fn test_s2c12() {
         // find block size based on when the ciphertext length changes
-        let mut block_size: usize = 0;
-        let mut last_ciphertext_size: usize = 0;
-        for s in 1..64 {
-            let input: Vec<u8> = (0..s).map(|_| 65 ).collect();
-            let ciphertext = encryption_oracle(input.as_ref()).unwrap();
-            if last_ciphertext_size > 0 && ciphertext.len() > last_ciphertext_size {
-                block_size = ciphertext.len() - last_ciphertext_size;
-                break;
-            }
-            last_ciphertext_size = ciphertext.len();
-        }
+        let block_size = ecb::determine_block_size(64, encryption_oracle);
         assert_eq!(block_size, KEY.len());
 
         // determine if it's ECB by feeding it a repeated block
-        assert!(ecb_detector::is_ecb(encryption_oracle((0..block_size*2).map(|_| 65).collect::<Vec<u8>>().as_ref()).unwrap().as_ref(), &block_size));
+        let is_ecb = ecb::is_ecb(encryption_oracle((0..block_size*2).map(|_| 65).collect::<Vec<u8>>().as_ref()).unwrap().as_ref(), &block_size);
+        assert!(is_ecb);
 
         // decrypt one block, one byte at a time
         let mut message: Vec<u8> = Vec::new();
@@ -75,7 +54,7 @@ mod tests {
             for i in (0..block_size).rev() {
                 let prefix: Vec<u8> = (0..i).map(|_| 65).collect();
                 let known_prefix = [prefix.to_owned(), message.to_owned()].concat();
-                let dict = dictionary(known_prefix.as_ref(), block_start, block_end);
+                let dict = ecb::build_byte_dictionary(known_prefix.as_ref(), block_start, block_end, encryption_oracle);
                 let block = encryption_oracle(prefix.as_ref()).unwrap()[block_start..block_end].to_vec();
                 let byte = dict.get::<Vec<u8>>(block.as_ref()).copied();
                 if byte.is_some() {

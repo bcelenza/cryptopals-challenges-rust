@@ -1,2 +1,2 @@
-pub mod ecb_detector;
+pub mod ecb;
 pub mod hamming;
