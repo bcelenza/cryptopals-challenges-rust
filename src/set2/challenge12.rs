@@ -66,7 +66,10 @@ mod tests {
             }
         }
 
-        let final_message = pkcs7::unpad(message.as_ref());
-        assert_eq!(UNKNOWN_STRING.to_vec(), final_message);
+        match pkcs7::unpad(message.as_ref(), block_size) {
+            Ok(v) => assert_eq!(UNKNOWN_STRING.to_vec(), v),
+            Err(e) => panic!("{}", e)
+        };
+        
     }
 }

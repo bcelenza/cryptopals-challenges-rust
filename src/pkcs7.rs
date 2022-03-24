@@ -1,14 +1,43 @@
-
 pub mod pkcs7 {
+    use std::fmt;
+    use std::error::Error;
+
+    type Result<T> = std::result::Result<T, Pkcs7UnpadError>;
+
+    #[derive(Debug)]
+    pub struct Pkcs7UnpadError;
+
+    impl fmt::Display for Pkcs7UnpadError {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(f, "invalid pkcs7 padding")
+        }
+    }
+
+    impl Error for Pkcs7UnpadError {
+        fn description(&self) -> &str {
+            "PKCS7 unpadding error"
+        }
+    }
+
     pub fn pad(input: &[u8], key_size: usize) -> Vec<u8> {
         let pad_num: usize;
         pad_num = key_size - (input.len() % key_size);
         [input.to_vec(), vec![pad_num as u8; pad_num]].concat()
     }
     
-    pub fn unpad(input: &[u8]) -> Vec<u8> {
+    pub fn unpad(input: &[u8], key_size: usize) -> Result<Vec<u8>> {
         let pad_num = input.last().unwrap();
-        input[0..input.len() - *pad_num as usize].to_vec()
+        if *pad_num == 0 as u8 || *pad_num as usize > key_size {
+            // invalid padding character
+            return Err(Pkcs7UnpadError)
+        }
+        for i in input[input.len() - *pad_num as usize..input.len()].to_vec() {
+            if i != *pad_num {
+                // inconsistent padding
+                return Err(Pkcs7UnpadError)
+            }
+        }
+        Ok(input[0..input.len() - *pad_num as usize].to_vec())
     }
 
     #[cfg(test)]
@@ -45,15 +74,20 @@ pub mod pkcs7 {
         #[test]
         fn test_unpad_single_byte() {
             let input = vec![0, 0, 0, 1];
-            let result = unpad(&input);
-            assert_eq!(vec![0, 0, 0], result);
+            match unpad(&input, 4) {
+                Ok(v) => assert_eq!(vec![0, 0, 0], v),
+                Err(e) => panic!("{}", e)
+            }
         }
 
         #[test]
         fn test_unpad_multi_byte() {
             let input = vec![0, 0, 0, 4, 4, 4, 4];
-            let result = unpad(&input);
-            assert_eq!(vec![0, 0, 0], result);
+            match unpad(&input, 7) {
+                Ok(v) => assert_eq!(vec![0, 0, 0], v),
+                Err(e) => panic!("{}", e)
+            };
+            
         }
     }
 }

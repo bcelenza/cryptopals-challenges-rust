@@ -62,7 +62,10 @@ pub fn decrypt(ciphertext: &[u8], key: &[u8], iv: &[u8]) -> Result<Vec<u8>, Box<
         result.append(&mut decrypted);
         last_block = block.to_vec();
     }
-    Ok(pkcs7::unpad(&result))
+    match pkcs7::unpad(&result, iv.len()) {
+        Ok(v) => Ok(v),
+        Err(e) => panic!("{}", e)
+    }
 }
 
 #[cfg(test)]
