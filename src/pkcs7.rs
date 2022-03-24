@@ -74,20 +74,16 @@ pub mod pkcs7 {
         #[test]
         fn test_unpad_single_byte() {
             let input = vec![0, 0, 0, 1];
-            match unpad(&input, 4) {
-                Ok(v) => assert_eq!(vec![0, 0, 0], v),
-                Err(e) => panic!("{}", e)
-            }
+            let result = unpad(&input, 4).unwrap();
+            assert_eq!(vec![0, 0, 0], result);
         }
 
         #[test]
         fn test_unpad_multi_byte() {
             let input = vec![0, 0, 0, 4, 4, 4, 4];
-            match unpad(&input, 7) {
-                Ok(v) => assert_eq!(vec![0, 0, 0], v),
-                Err(e) => panic!("{}", e)
-            };
-            
+            let result = unpad(&input, 7).unwrap(); 
+            assert_eq!(vec![0, 0, 0], result);
         }
+            
     }
 }
