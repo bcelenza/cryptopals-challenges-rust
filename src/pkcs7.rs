@@ -84,6 +84,13 @@ pub mod pkcs7 {
             let result = unpad(&input, 7).unwrap(); 
             assert_eq!(vec![0, 0, 0], result);
         }
+
+        #[test]
+        #[should_panic]
+        fn test_unpad_invalid_input() {
+            let input = vec![0, 0, 0, 0, 0, 4, 4, 4];
+            unpad(&input, 8).unwrap();
+        }
             
     }
 }
