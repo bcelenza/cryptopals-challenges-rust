@@ -26,18 +26,18 @@ pub mod pkcs7 {
     }
     
     pub fn unpad(input: &[u8], key_size: usize) -> Result<Vec<u8>> {
-        let pad_num = input.last().unwrap();
-        if *pad_num == 0 as u8 || *pad_num as usize > key_size {
+        let pad_num = *input.last().unwrap() as usize;
+        if pad_num == 0 || pad_num  > key_size {
             // invalid padding character
             return Err(Pkcs7UnpadError)
         }
-        for i in input[input.len() - *pad_num as usize..input.len()].to_vec() {
-            if i != *pad_num {
+        for i in input[input.len() - pad_num..input.len()].to_vec() {
+            if i != pad_num as u8 {
                 // inconsistent padding
                 return Err(Pkcs7UnpadError)
             }
         }
-        Ok(input[0..input.len() - *pad_num as usize].to_vec())
+        Ok(input[0..input.len() - pad_num].to_vec())
     }
 
     #[cfg(test)]
