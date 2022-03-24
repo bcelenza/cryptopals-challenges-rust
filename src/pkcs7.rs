@@ -2,13 +2,7 @@
 pub mod pkcs7 {
     pub fn pad(input: &[u8], key_size: usize) -> Vec<u8> {
         let pad_num: usize;
-        if input.len() == key_size {
-            pad_num = key_size;
-        } else if input.len() < key_size {
-            pad_num = key_size - input.len();
-        } else {
-            pad_num = key_size - (input.len() % key_size);
-        }
+        pad_num = key_size - (input.len() % key_size);
         [input.to_vec(), vec![pad_num as u8; pad_num]].concat()
     }
     
