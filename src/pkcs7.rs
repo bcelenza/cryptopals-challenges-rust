@@ -86,10 +86,10 @@ pub mod pkcs7 {
         }
 
         #[test]
-        #[should_panic]
         fn test_unpad_invalid_input() {
             let input = vec![0, 0, 0, 0, 0, 4, 4, 4];
-            unpad(&input, 8).unwrap();
+            let err = unpad(&input, 8).unwrap_err();
+            assert_eq!("invalid pkcs7 padding", err.to_string());
         }
             
     }
