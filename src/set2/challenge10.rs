@@ -13,7 +13,7 @@ mod tests {
     use std::fs;
 
     #[test]
-    fn test_s2c10() {
+    fn test_solution() {
         let key = b"YELLOW SUBMARINE";
         let iv = vec![0; key.len()];
         let input = fs::read_to_string("data/set2/challenge10.txt").unwrap();

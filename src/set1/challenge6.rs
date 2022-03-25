@@ -93,7 +93,7 @@ mod tests {
     use std::fs;
 
     #[test]
-    fn test_s1c6() {
+    fn test_solution() {
         let input = fs::read_to_string("data/set1/challenge6.txt").unwrap();
         let result = solve(&input).unwrap();
         assert_eq!(fs::read_to_string("data/set1/challenge6-decrypted.txt").unwrap(), result.value);

@@ -31,7 +31,7 @@ mod tests {
     use crate::pkcs7::pkcs7;
 
     #[test]
-    fn test_s2c12() {
+    fn test_solution() {
         // find block size based on when the ciphertext length changes
         let block_size = ecb::determine_block_size(64, encryption_oracle);
         assert_eq!(block_size, KEY.len());

@@ -13,7 +13,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_s2c9() {
+    fn test_solution() {
         let input = String::from("YELLOW SUBMARINE");
         let result = solve(&input).unwrap();
         let expected = [input.as_bytes().to_vec(), vec![4; 4]].concat();

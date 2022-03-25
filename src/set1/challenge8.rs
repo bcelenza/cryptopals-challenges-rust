@@ -38,7 +38,7 @@ mod tests {
     use std::fs;
 
     #[test]
-    fn test_s1c8() {
+    fn test_solution() {
         let input = fs::read_to_string("data/set1/challenge8.txt").unwrap();
         let result = solve(&input).unwrap();
         // line 133 is expected

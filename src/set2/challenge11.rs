@@ -59,7 +59,7 @@ mod tests {
     use crate::codebreak::ecb;
 
     #[test]
-    fn test_s2c11() {
+    fn test_solution() {
         let input = fs::read_to_string("data/set2/challenge11.txt").unwrap();
         for _ in 0..1000 {
             let result = encryption_oracle(input.as_bytes()).unwrap();

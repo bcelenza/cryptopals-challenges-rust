@@ -16,7 +16,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_s1c2() {
+    fn test_solution() {
         let input = String::from("1c0111001f010100061a024b53535009181c");
         let result = solve(&input).unwrap();
         assert_eq!("746865206b696420646f6e277420706c6179", result);

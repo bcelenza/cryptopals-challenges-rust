@@ -81,7 +81,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_s1c3() {
+    fn test_solution() {
         let input = String::from("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736");
         let result = solve(&input).unwrap();
         assert_eq!("Cooking MC's like a pound of bacon", String::from_utf8(result.value).unwrap());
