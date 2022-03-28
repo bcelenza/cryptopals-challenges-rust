@@ -1,4 +1,3 @@
-
 use base64;
 use crate::cipher::aes_128_ecb;
 use lazy_static::lazy_static;

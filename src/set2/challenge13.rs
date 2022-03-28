@@ -1,4 +1,3 @@
-
 use crate::cipher::aes_128_ecb;
 use lazy_static::lazy_static;
 use rand::Rng;
